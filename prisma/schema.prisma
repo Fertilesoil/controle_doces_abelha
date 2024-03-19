@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id            String   @id @default(uuid())
+  primeiro_nome String
+  sobrenome     String
+  email         String   @unique
+  senha         String
+  createdAt     DateTime @default(dbgenerated("NOW()"))
+
+  @@map("usuarios")
+}
+
+model ProdutoEstoque {
+  id                 String  @id @default(uuid())
+  nome               String
+  descricao          String?
+  preco              Float
+  quantidade_estoque Int
+
+  @@map("produto_estoque")
+}
+
+model ProdutoVenda {
+  id         String      @id @default(uuid())
+  nome       String
+  descricao  String?
+  peso       Int
+  preco      Float
+  recheio    Recheio?    @relation(fields: [recheio_id], references: [id])
+  recheio_id String?     @unique
+  ItemVenda  ItemVenda[]
+
+  @@map("produto_venda")
+}
+
+model Recheio {
+  id           String         @id @default(uuid())
+  nome         String
+  ItemVenda    ItemVenda[]
+  ProdutoVenda ProdutoVenda[]
+
+  @@map("recheio")
+}
+
+model Venda {
+  id          String      @id @default(uuid())
+  total_venda Float
+  createdAt   DateTime    @default(dbgenerated("NOW()"))
+  ItemVenda   ItemVenda[]
+
+  @@map("venda")
+}
+
+model ItemVenda {
+  id               String       @id @default(uuid())
+  venda            Venda        @relation(fields: [venda_id], references: [id])
+  venda_id         String
+  produto_venda    ProdutoVenda @relation(fields: [produto_venda_id], references: [id])
+  produto_venda_id String
+  recheio          Recheio?     @relation(fields: [recheio_id], references: [id])
+  recheio_id       String
+  quantidade       Int
+  total_item       Float
+
+  @@map("item_venda")
+}
