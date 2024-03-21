@@ -41,7 +41,7 @@ model ProdutoVenda {
   peso       Int
   preco      Float
   recheio    Recheio?    @relation(fields: [recheio_id], references: [id])
-  recheio_id String?     @unique
+  recheio_id String?     
   ItemVenda  ItemVenda[]
 
   @@map("produto_venda")
@@ -50,14 +50,13 @@ model ProdutoVenda {
 model Recheio {
   id           String         @id @default(uuid())
   nome         String
-  ItemVenda    ItemVenda[]
   ProdutoVenda ProdutoVenda[]
 
   @@map("recheio")
 }
 
 model Venda {
-  id          String      @id @default(uuid())
+  id          String      @id @default(uuid()) @unique
   total_venda Float
   createdAt   DateTime    @default(dbgenerated("NOW()"))
   ItemVenda   ItemVenda[]
@@ -71,8 +70,6 @@ model ItemVenda {
   venda_id         String
   produto_venda    ProdutoVenda @relation(fields: [produto_venda_id], references: [id])
   produto_venda_id String
-  recheio          Recheio?     @relation(fields: [recheio_id], references: [id])
-  recheio_id       String
   quantidade       Int
   total_item       Float
 

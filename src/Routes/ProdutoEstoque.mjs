@@ -1,8 +1,8 @@
-﻿import { ProdutosController } from "../Controllers/ProdutosController.mjs";
+﻿import { ProdutoEstoqueController } from "../Controllers/ProdutoEstoqueController.mjs";
 import { Router } from "express";
 
 const router = Router();
-const produtosController = new ProdutosController();
+const produtosController = new ProdutoEstoqueController();
 
 router.get("/api/listarProdutos", produtosController.listarProdutos);
 router.post("/api/criarProduto", produtosController.cadastrarProduto);

@@ -1,10 +1,10 @@
 ﻿import { prisma } from '../Middlewares/InstanciaCliente.mjs';
 
-export class ProdutosController {
+export class ProdutoEstoqueController {
 
   async listarProdutos(req, res) {
     try {
-      const listarProdutos = await prisma.produto.findMany();
+      const listarProdutos = await prisma.produtoEstoque.findMany();
 
       if (listarProdutos)
         return res.status(200).json(listarProdutos);
@@ -21,10 +21,11 @@ export class ProdutosController {
     const { body } = req;
 
     try {
-      const novoProduto = await prisma.produto.create({ data: body });
+      const novoProduto = await prisma.produtoEstoque.create({ data: body });
       if (novoProduto)
         return res.status(201).json(novoProduto);
     } catch (error) {
+      console.log(error);
       return res.status(500).json({ msg: "Erro Interno no Servidor", error: error });
     };
   };
@@ -34,9 +35,7 @@ export class ProdutosController {
     const { id } = req.params;
 
     try {
-      const produtoAtualizado = await prisma.produto.update({ where: { id: id }, data: body });
-
-      console.log(produtoAtualizado.id);
+      const produtoAtualizado = await prisma.produtoEstoque.update({ where: { id: id }, data: body });
 
       if (produtoAtualizado)
         return res.status(201).json(produtoAtualizado);
@@ -52,7 +51,7 @@ export class ProdutosController {
     const { id } = req.params;
 
     try {
-      const produtoDeletado = await prisma.produto.delete({ where: { id: id } });
+      const produtoDeletado = await prisma.produtoEstoque.delete({ where: { id: id } });
 
       return res.status(200).json({ msg: "Produto deletado com sucesso!" });
     } catch (error) {
