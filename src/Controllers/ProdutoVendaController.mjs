@@ -46,6 +46,6 @@ export class ProdutoVendaController {
     } catch (error) {
       console.log(error);
       return res.status(500).json({ msg: "Erro Interno no Servidor", error: error });
-    }
-  }
+    };
+  };
 }
