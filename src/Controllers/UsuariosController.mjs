@@ -1,11 +1,17 @@
 ﻿import { prisma } from "../Middlewares/InstanciaCliente.mjs";
+import { criarValidacao } from "../Middlewares/Validacoes/CriarValidacao.mjs";
 
-export class UsuariosController {
+class UsuariosController {
 
   async cadastrarUsuario(req, res) {
-    const { body } = req;
-
+    const validacao = criarValidacao(req);
+    if (validacao) {
+      const { msg, campo, value } = validacao;
+      return res.status(403).json({ campo_erro: campo, valor: value, msg });
+    }
+    
     try {
+      const { body } = req;
       const novoUsuario = await prisma.usuario.create({ data: body });
       if (novoUsuario)
         return res.status(201).json(novoUsuario);
@@ -38,10 +44,15 @@ export class UsuariosController {
 
 
   async atualizarUsuario(req, res) {
-    const { id } = req.params;
-    const { body } = req;
-
+    const validacao = criarValidacao(req, res);
+    if (validacao) {
+      const { msg, campo, value } = validacao;
+      return res.status(403).json({ campoErro: campo, valor: value, msg });
+    }
+    
     try {
+      const { id } = req.params;
+      const { body } = req;
       const usuarioAtualizado = await prisma.usuario.update({ where: { id: id }, data: body });
       if (usuarioAtualizado)
         return res.status(201).json(usuarioAtualizado);
@@ -50,3 +61,5 @@ export class UsuariosController {
     };
   };
 }
+
+export default new UsuariosController();

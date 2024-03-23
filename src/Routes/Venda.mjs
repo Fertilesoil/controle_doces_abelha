@@ -1,12 +1,11 @@
 ﻿import { Router } from "express";
-import { VendaController } from "../Controllers/VendaController.mjs";
+import VendaController from "../Controllers/VendaController.mjs";
 
 const router = new Router();
-const vendaController = new VendaController();
 
-router.get("/api/listarVendas", vendaController.listarVendas);
-router.get("/api/listarPorData", vendaController.vendaPorData);
-router.post("/api/cadastrarVenda", vendaController.cadastrarVenda);
-router.delete("/api/deletarVenda/:id", vendaController.deletarVenda);
+router.get("/api/listarVendas", VendaController.listarVendas);
+router.get("/api/listarPorData", VendaController.vendaPorData);
+router.post("/api/cadastrarVenda", VendaController.cadastrarVenda);
+router.delete("/api/deletarVenda/:id", VendaController.deletarVenda);
 
 export default router;

@@ -1,12 +1,15 @@
-﻿import { UsuariosController } from "../Controllers/UsuariosController.mjs";
+﻿import UsuariosController from "../Controllers/UsuariosController.mjs";
 import { Router } from "express";
+import { validacaoUsuarioSchema } from "../Middlewares/Validacoes/ValidationSchemas.mjs";
+import { checkSchema } from "express-validator";
 
-const router = Router();
-const usuariosController = new UsuariosController();
+const routerUsuarios = Router();
 
-router.get("/api/listarUsuarios", usuariosController.listarUsuarios);
-router.post("/api/criarUsuario", usuariosController.cadastrarUsuario);
-router.delete("/api/deletarUsuario/:id", usuariosController.deletarUsuario);
-router.put("/api/atualizarUsuario/:id", usuariosController.atualizarUsuario);
+routerUsuarios.get("/api/listarUsuarios", UsuariosController.listarUsuarios);
+routerUsuarios.post("/api/criarUsuario",
+ checkSchema(validacaoUsuarioSchema),
+ UsuariosController.cadastrarUsuario);
+routerUsuarios.delete("/api/deletarUsuario/:id", UsuariosController.deletarUsuario);
+routerUsuarios.put("/api/atualizarUsuario/:id", UsuariosController.atualizarUsuario);
 
-export default router;
+export default routerUsuarios;

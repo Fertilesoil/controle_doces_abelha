@@ -1,13 +1,16 @@
 ﻿import { Router } from "express";
-import { RecheioController } from "../Controllers/RecheioController.mjs";
+import RecheioController from "../Controllers/RecheioController.mjs";
+import { checkSchema } from "express-validator";
+import { validacaoRecheioSchema } from "../Middlewares/Validacoes/ValidationSchemas.mjs";
 
 const router = new Router();
-const recheioController = new RecheioController();
 
-router.get("/api/listarRecheios", recheioController.listarRecheios);
-router.get("/api/acharRecheio/:id", recheioController.listarRecheioPorId);
-router.post("/api/cadastrarRecheio", recheioController.cadastrarRecheio);
-router.put("/api/atualizarRecheio/:id", recheioController.atualizarRecheio);
-router.delete("/api/deletarRecheio/:id", recheioController.deletarRecheio);
+router.get("/api/listarRecheios", RecheioController.listarRecheios);
+router.get("/api/acharRecheio/:id", RecheioController.listarRecheioPorId);
+router.post("/api/cadastrarRecheio",
+ checkSchema(validacaoRecheioSchema),
+ RecheioController.cadastrarRecheio);
+router.put("/api/atualizarRecheio/:id", RecheioController.atualizarRecheio);
+router.delete("/api/deletarRecheio/:id", RecheioController.deletarRecheio);
 
 export default router;

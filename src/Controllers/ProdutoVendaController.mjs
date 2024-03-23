@@ -1,5 +1,5 @@
 ﻿import { prisma } from "../Middlewares/InstanciaCliente.mjs";
-
+import { criarValidacao } from "../Middlewares/Validacoes/CriarValidacao.mjs";
 
 export class ProdutoVendaController {
   async listarProdutosVenda(req, res) {
@@ -14,9 +14,15 @@ export class ProdutoVendaController {
   }
 
   async cadastrarProdutoVenda(req, res) {
-    const { body } = req;
+    const validacao = criarValidacao(req);
+    if (validacao) {
+      const { msg, campo, value } = validacao;
+      console.log({ msg, campo, value });
+      return res.status(403).json({ campo_erro: campo, valor: value, msg });
+    }
 
     try {
+      const { body } = req;
       const novoProduto = await prisma.produtoVenda.create({ data: body });
       if (novoProduto)
         return res.status(201).json(novoProduto);
@@ -27,6 +33,13 @@ export class ProdutoVendaController {
   };
 
   async atualizarProdutoVenda(req, res) {
+    const validacao = criarValidacao(req);
+    if (validacao) {
+      const { msg, campo, value } = validacao;
+      console.log({ msg, campo, value });
+      return res.status(403).json({ campo_erro: campo, valor: value, msg });
+    }
+
     try {
       const { id } = req.params;
       const { body } = req;

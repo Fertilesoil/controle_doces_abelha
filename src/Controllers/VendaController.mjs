@@ -52,8 +52,8 @@ export class VendaController {
  }
 
  async cadastrarVenda(req, res) {
-  const { total_venda, itens } = req.body;
   try {
+   const { total_venda, itens } = req.body;
    await prisma.$transaction(async (prisma) => {
 
     const novaVenda = await prisma.venda.create({
@@ -76,7 +76,9 @@ export class VendaController {
    })
   } catch (error) {
    console.error("Erro ao registrar a venda:", error);
-   res.status(500).json({ error: "Erro ao registrar a venda" });
+   res.status(500).json({ error: "Erro ao registrar a venda. Você deve registrar um valor numérico válido" });
   };
  };
 }
+
+export default new VendaController();
