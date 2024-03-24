@@ -1,10 +1,7 @@
 ﻿export const validacaoUsuarioSchema = {
  primeiro_nome: {
   isLength: {
-   options: {
-    min: 3,
-    max: 40,
-   },
+   options: { min: 3, max: 40 },
    errorMessage: "Nome de usuário deve conter no mínimo 3 caracteres e no máximo 40"
   },
   notEmpty: {
@@ -14,10 +11,7 @@
  },
  sobrenome: {
   isLength: {
-   options: {
-    min: 3,
-    max: 40,
-   },
+   options: { min: 3, max: 40 },
    errorMessage: "Nome de usuário deve conter no mínimo 3 caracteres e no máximo 40"
   },
   notEmpty: {
@@ -36,13 +30,10 @@ export const validacaoRecheioSchema = {
    errorMessage: "Nome do recheio não pode estar vazio"
   },
   isString: true,
- },
- isLength: {
-  options: {
-   min: 3,
-   max: 40,
+  isLength: {
+   options: { min: 3, max: 40 },
+   errorMessage: "Nome de usuário deve conter no mínimo 3 caracteres e no máximo 40"
   },
-  errorMessage: "Nome de usuário deve conter no mínimo 3 caracteres e no máximo 40"
  },
 }
 
@@ -55,11 +46,8 @@ export const validacaoProdutoEstoqueSchema = {
    errorMessage: "Nome do produto não pode estar vazio"
   },
   isLength: {
-   options: {
-    min: 3,
-    max: 40,
-   },
-   errorMessage: "Nome do produto deve conter no mínimo 3 caracteres e no máximo 40"
+   options: { min: 3, max: 40 },
+   errorMessage: "Nome de usuário deve conter no mínimo 3 caracteres e no máximo 40"
   },
  },
  descricao: {
@@ -92,11 +80,8 @@ export const validacaoProdutoVendaSchema = {
    errorMessage: "Nome do produto não pode estar vazio"
   },
   isLength: {
-   options: {
-    min: 3,
-    max: 40,
-   },
-   errorMessage: "Nome do produto deve conter no mínimo 3 caracteres e no máximo 40"
+   options: { min: 3, max: 40 },
+   errorMessage: "Nome de usuário deve conter no mínimo 3 caracteres e no máximo 40"
   },
  },
  descricao: {

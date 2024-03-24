@@ -1,39 +1,43 @@
-﻿import { prisma } from "../Middlewares/InstanciaCliente.mjs";
-import { criarValidacao } from "../Middlewares/Validacoes/CriarValidacao.mjs";
+﻿import { criarValidacao, retornaErro } from "../Middlewares/Validacoes/CriarValidacao.mjs";
+import UsuarioRepository from "../Repositories/UsuarioRepository.mjs";
 
 class UsuariosController {
 
   async cadastrarUsuario(req, res) {
     const validacao = criarValidacao(req);
     if (validacao) {
-      const { msg, campo, value } = validacao;
-      return res.status(403).json({ campo_erro: campo, valor: value, msg });
+      retornaErro(validacao, res);
+      return;
     }
-    
+
+    const { body } = req;
     try {
-      const { body } = req;
-      const novoUsuario = await prisma.usuario.create({ data: body });
-      if (novoUsuario)
-        return res.status(201).json(novoUsuario);
+      const usuario = await UsuarioRepository.cadastrar(body);
+      if (usuario)
+        return res.status(201).json(usuario);
     } catch (error) {
-      return res.status(500).json({ msg: "Erro Interno no Servidor", error: error });
+      return res.status(500).json({ msg: "Erro Interno no Servidor", erro: error });
     };
+
+    return res.status(403).json({ campo_erro: campo, valor: value, msg });
   };
 
   async listarUsuarios(req, res) {
     try {
-      const clientes = await prisma.usuario.findMany();
+      const clientes = await UsuarioRepository.listar();
       if (clientes)
         return res.status(200).json(clientes);
     } catch (error) {
       return res.status(500).json({ msg: "Erro Interno no Servidor", error: error });
     };
+
+    return res.status(403).json({ campo_erro: campo, valor: value, msg });
   };
 
   async deletarUsuario(req, res) {
     try {
       const { id } = req.params;
-      const usuarioDeletado = await prisma.usuario.delete({ where: { id: id } });
+      const usuarioDeletado = await UsuarioRepository.deletar(id);
 
       if (usuarioDeletado)
         return res.status(204).json({ msg: "Usuário deletado com sucesso!" });
@@ -46,14 +50,16 @@ class UsuariosController {
   async atualizarUsuario(req, res) {
     const validacao = criarValidacao(req, res);
     if (validacao) {
-      const { msg, campo, value } = validacao;
-      return res.status(403).json({ campoErro: campo, valor: value, msg });
+      retornaErro(validacao, res);
+      return;
     }
-    
+
     try {
       const { id } = req.params;
       const { body } = req;
-      const usuarioAtualizado = await prisma.usuario.update({ where: { id: id }, data: body });
+
+      const usuarioAtualizado = await UsuarioRepository.atualizar(id, body);
+
       if (usuarioAtualizado)
         return res.status(201).json(usuarioAtualizado);
     } catch (error) {

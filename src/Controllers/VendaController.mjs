@@ -1,84 +1,52 @@
-﻿import { prisma } from "../Middlewares/InstanciaCliente.mjs";
+﻿import VendaRepository from "../Repositories/VendaRepository.mjs";
 
 export class VendaController {
 
- async listarVendas(req, res) {
-  try {
-   const vendas = await prisma.venda.findMany({
-    include: {
-     id: true,
-     total_venda: true,
-     createdAt: true,
-    },
-    include: {
-     ItemVenda: true,
-    },
-   });
-   return res.status(200).json(vendas);
-  } catch (error) {
-   console.log(error);
-   res.status(500).json({ error: "Erro ao buscar as vendas" });
+  async listarVendas(req, res) {
+    try {
+      const lista = await VendaRepository.listar();
+      if (lista)
+        return res.status(200).json(lista);
+    } catch (error) {
+      res.status(500).json({ error: "Erro ao buscar as vendas", error });
+    };
   };
- };
 
- async vendaPorData(req, res) {
-  try {
-   const { maior, menor } = req.body;
-   const data = await prisma.venda.findMany({
-    where: {
-     createdAt: {
-      gt: new Date(maior).toISOString(),
-      lt: new Date(menor).toISOString(),
-     },
-    },
-   },
-   );
-   return res.status(200).json(data);
-  } catch (error) {
-   console.log(error);
-   res.status(500).json({ error: "Erro ao buscar as vendas" });
+  async vendaPorData(req, res) {
+    try {
+      const { maior, menor } = req.body;
+
+      const data = await VendaRepository.filtrarData(maior, menor);
+      if (data)
+        return res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ error: "Erro ao buscar as vendas", error });
+    };
   };
- };
 
- async deletarVenda(req, res) {
-  const { id } = req.params;
-  try {
-   const deletados = await prisma.venda.delete({ where: { id: id } });
-   return res.status(200).send({ msg: "Deu bom, tudo apagado" });
-  } catch (error) {
-   console.log(error);
-   res.status(500).json({ error: "Erro ao deletar a venda" });
+  async deletarVenda(req, res) {
+    try {
+      const { id } = req.params;
+      const deletado = await VendaRepository.deletar(id);
+      if (deletado)
+        return res.status(200).send({ msg: "Deu bom, tudo apagado", deletado });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ erro: "Erro ao deletar a venda", error });
+    }
   }
- }
 
- async cadastrarVenda(req, res) {
-  try {
-   const { total_venda, itens } = req.body;
-   await prisma.$transaction(async (prisma) => {
-
-    const novaVenda = await prisma.venda.create({
-     data: {
-      total_venda,
-      ItemVenda: {
-       create: await Promise.all(itens.map(async item => ({
-        produto_venda_id: item.produto_venda_id,
-        quantidade: item.quantidade,
-        total_item: item.total_item
-       })))
-      }
-     },
-     include: {
-      ItemVenda: true
-     }
-    });
-
-    res.json(novaVenda);
-   })
-  } catch (error) {
-   console.error("Erro ao registrar a venda:", error);
-   res.status(500).json({ error: "Erro ao registrar a venda. Você deve registrar um valor numérico válido" });
+  async cadastrarVenda(req, res) {
+    try {
+      const { total_venda, itens } = req.body;
+      const cadastroVenda = await VendaRepository.cadastrar(total_venda, itens, res);
+      if (cadastroVenda)
+        return;
+    } catch (error) {
+      console.table(error);
+      return res.status(500).json({ error: "Erro ao registrar a venda. Você deve registrar um valor numérico válido", error });
+    };
   };
- };
 }
 
 export default new VendaController();

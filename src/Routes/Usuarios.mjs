@@ -10,6 +10,8 @@ routerUsuarios.post("/api/criarUsuario",
  checkSchema(validacaoUsuarioSchema),
  UsuariosController.cadastrarUsuario);
 routerUsuarios.delete("/api/deletarUsuario/:id", UsuariosController.deletarUsuario);
-routerUsuarios.put("/api/atualizarUsuario/:id", UsuariosController.atualizarUsuario);
+routerUsuarios.put("/api/atualizarUsuario/:id",
+ checkSchema(validacaoUsuarioSchema),
+ UsuariosController.atualizarUsuario);
 
 export default routerUsuarios;

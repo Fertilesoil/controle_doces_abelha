@@ -1,33 +1,30 @@
-﻿import { prisma } from "../Middlewares/InstanciaCliente.mjs";
-import { criarValidacao } from "../Middlewares/Validacoes/CriarValidacao.mjs";
+﻿import { criarValidacao, retornaErro } from "../Middlewares/Validacoes/CriarValidacao.mjs";
+import ProdutoVendaRepository from "../Repositories/ProdutoVendaRepository.mjs";
 
 export class ProdutoVendaController {
   async listarProdutosVenda(req, res) {
     try {
-      const listaProdutos = await prisma.produtoVenda.findMany();
-      return res.status(200).send(listaProdutos);
+      const lista = await ProdutoVendaRepository.listar();
+      if (lista)
+        return res.status(200).send(lista);
     } catch (error) {
-      console.log(error);
       return res.status(500).send({ msg: "Erro", error: error });
     }
-
   }
 
   async cadastrarProdutoVenda(req, res) {
     const validacao = criarValidacao(req);
     if (validacao) {
-      const { msg, campo, value } = validacao;
-      console.log({ msg, campo, value });
-      return res.status(403).json({ campo_erro: campo, valor: value, msg });
+      retornaErro(validacao, res);
+      return;
     }
 
     try {
       const { body } = req;
-      const novoProduto = await prisma.produtoVenda.create({ data: body });
+      const novoProduto = await ProdutoVendaRepository.cadastrar(body);
       if (novoProduto)
         return res.status(201).json(novoProduto);
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ msg: "Erro Interno no Servidor", error: error });
     };
   };
@@ -35,18 +32,17 @@ export class ProdutoVendaController {
   async atualizarProdutoVenda(req, res) {
     const validacao = criarValidacao(req);
     if (validacao) {
-      const { msg, campo, value } = validacao;
-      console.log({ msg, campo, value });
-      return res.status(403).json({ campo_erro: campo, valor: value, msg });
+      retornaErro(validacao, res);
+      return;
     }
 
     try {
       const { id } = req.params;
       const { body } = req;
-      const produtoAtualizado = await prisma.produtoVenda.update({ where: { id: id }, data: body });
-      return res.status(200).send(produtoAtualizado);
+      const produtoAtualizado = await ProdutoVendaRepository.atualizar(id, body);
+      if (produtoAtualizado)
+        return res.status(200).send(produtoAtualizado);
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ msg: "Erro Interno no Servidor", error: error });
     };
   };
@@ -54,10 +50,10 @@ export class ProdutoVendaController {
   async deletarProdutoVenda(req, res) {
     try {
       const { id } = req.params;
-      const produtoDeletado = await prisma.produtoVenda.delete({ where: { id: id } });
-      return res.status(200).send({ msg: "Produto deletado com sucesso" });
+      const produtoDeletado = await ProdutoVendaRepository.deletar(id);
+      if (produtoDeletado)
+        return res.status(200).send({ msg: "Produto deletado com sucesso" });
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ msg: "Erro Interno no Servidor", error: error });
     };
   };

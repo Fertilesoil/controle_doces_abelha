@@ -1,14 +1,14 @@
-﻿import { prisma } from "../Middlewares/InstanciaCliente.mjs";
-import { criarValidacao } from "../Middlewares/Validacoes/CriarValidacao.mjs";
+﻿import { criarValidacao, retornaErro } from "../Middlewares/Validacoes/CriarValidacao.mjs";
+import RecheioRepository from "../Repositories/RecheioRepository.mjs";
 
 class RecheioController {
 
   async listarRecheios(req, res) {
     try {
-      const recheios = await prisma.recheio.findMany();
-      return res.status(200).send(recheios);
+      const recheios = await RecheioRepository.listar();
+      if (recheios)
+        return res.status(200).send(recheios);
     } catch (error) {
-      console.log(error);
       return res.status(500).send({ msg: "Houve um erro no servidor", erro: error });
     };
   };
@@ -16,10 +16,10 @@ class RecheioController {
   async listarRecheioPorId(req, res) {
     try {
       const { id } = req.params;
-      const recheio = await prisma.recheio.findUnique({ where: { id: id } });
-      return res.status(200).send(recheio);
+      const recheio = await RecheioRepository.listarPorId(id);
+      if (recheio)
+        return res.status(200).send(recheio);
     } catch (error) {
-      console.log(error);
       return res.status(500).send({ msg: "Houve um erro no servidor", erro: error });
     };
   };
@@ -27,45 +27,49 @@ class RecheioController {
   async cadastrarRecheio(req, res) {
     const validacao = criarValidacao(req);
     if (validacao) {
-      const { msg, campo, value } = validacao;
-      console.log({ msg, campo, value });
-      return res.status(403).json({ campo_erro: campo, valor: value, msg });
+      retornaErro(validacao, res);
+      return;
     }
 
     try {
       const { body } = req;
-      const novoRecheio = await prisma.recheio.create({ data: body });
-      return res.status(201).send(novoRecheio);
+      const recheioCadastrado = await RecheioRepository.cadastrar(body);
+      if (recheioCadastrado)
+        return res.status(201).send(recheioCadastrado);
     } catch (error) {
-      console.log(error);
       return res.status(500).send({ msg: "Houve um erro no servidor", erro: error });
     };
   };
 
   async atualizarRecheio(req, res) {
+    const validacao = criarValidacao(req);
+    if (validacao) {
+      retornaErro(validacao, res);
+      return;
+    }
+
     try {
       const { body } = req;
       const { id } = req.params;
-      const recheioAtualizado = await prisma.recheio.update({ where: { id: id }, data: body });
-      return res.status(200).send(recheioAtualizado);
+      const atualizado = await RecheioRepository.atualizar(body, id);
+      if (atualizado)
+        return res.status(200).send(atualizado);
     } catch (error) {
-      console.log(error);
       return res.status(500).send({ msg: "Houve um erro no servidor", erro: error });
     };
   };
 
   async deletarRecheio(req, res) {
-    const { id } = req.params;
     try {
-      const recheioDeletado = await prisma.recheio.delete({ where: { id: id } });
-      if (recheioDeletado)
+      const { id } = req.params;
+      const deletado = await RecheioRepository.deletar(id);
+      if (deletado)
         return res.status(200).json({ msg: "Recheio deletado com sucesso!" });
     } catch (error) {
       const { meta } = error;
       if (meta.cause === "Record to delete does not exist.")
         return res.status(404).json({ msg: "Este recheio não existe" });
 
-      console.log(error);
       return res.status(500).send({ msg: "Houve um erro no servidor", erro: error });
     };
   };

@@ -10,7 +10,9 @@ router.get("/api/acharRecheio/:id", RecheioController.listarRecheioPorId);
 router.post("/api/cadastrarRecheio",
  checkSchema(validacaoRecheioSchema),
  RecheioController.cadastrarRecheio);
-router.put("/api/atualizarRecheio/:id", RecheioController.atualizarRecheio);
+router.put("/api/atualizarRecheio/:id",
+ checkSchema(validacaoRecheioSchema),
+ RecheioController.atualizarRecheio);
 router.delete("/api/deletarRecheio/:id", RecheioController.deletarRecheio);
 
 export default router;
