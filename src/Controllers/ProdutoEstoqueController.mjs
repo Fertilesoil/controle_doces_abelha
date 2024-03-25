@@ -1,13 +1,14 @@
 ﻿import { criarValidacao, retornaErro } from "../Middlewares/Validacoes/CriarValidacao.mjs";
 import ProdutoEstoqueRepository from "../Repositories/ProdutoEstoqueRepository.mjs";
 
-export class ProdutoEstoqueController {
+class ProdutoEstoqueController {
 
   async listarProdutos(req, res) {
     try {
       const lista = await ProdutoEstoqueRepository.listar();
+      const { usuario } = req;
       if (lista)
-        return res.status(200).json(lista);
+        return res.status(200).json({ lista, usuario });
     } catch (error) {
       const { data } = error;
       if (data === undefined)
@@ -71,3 +72,5 @@ export class ProdutoEstoqueController {
     };
   };
 }
+
+export default new ProdutoEstoqueController();

@@ -1,7 +1,7 @@
 ﻿import { criarValidacao, retornaErro } from "../Middlewares/Validacoes/CriarValidacao.mjs";
 import ProdutoVendaRepository from "../Repositories/ProdutoVendaRepository.mjs";
 
-export class ProdutoVendaController {
+class ProdutoVendaController {
   async listarProdutosVenda(req, res) {
     try {
       const lista = await ProdutoVendaRepository.listar();
@@ -58,3 +58,5 @@ export class ProdutoVendaController {
     };
   };
 }
+
+export default new ProdutoVendaController();

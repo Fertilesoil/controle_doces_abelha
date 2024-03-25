@@ -1,5 +1,6 @@
 ﻿import { criarValidacao, retornaErro } from "../Middlewares/Validacoes/CriarValidacao.mjs";
 import UsuarioRepository from "../Repositories/UsuarioRepository.mjs";
+import bcrypt from "bcrypt";
 
 class UsuariosController {
 
@@ -10,11 +11,14 @@ class UsuariosController {
       return;
     }
 
-    const { body } = req;
     try {
-      const usuario = await UsuarioRepository.cadastrar(body);
-      if (usuario)
-        return res.status(201).json(usuario);
+      const { primeiro_nome, sobrenome, email, senha } = req.body;
+      const senhaHash = await bcrypt.hash(senha, 10);
+      const usuario = await UsuarioRepository.cadastrar(primeiro_nome, sobrenome, email, senhaHash);
+      if (usuario) {
+        const { senha: _, ...usuarioCriado } = usuario;
+        return res.status(201).json(usuarioCriado);
+      }
     } catch (error) {
       return res.status(500).json({ msg: "Erro Interno no Servidor", erro: error });
     };
@@ -24,9 +28,10 @@ class UsuariosController {
 
   async listarUsuarios(req, res) {
     try {
-      const clientes = await UsuarioRepository.listar();
-      if (clientes)
-        return res.status(200).json(clientes);
+      const usuarios = await UsuarioRepository.listar();
+      if (usuarios) {
+        return res.status(200).json(usuarios);
+      }
     } catch (error) {
       return res.status(500).json({ msg: "Erro Interno no Servidor", error: error });
     };

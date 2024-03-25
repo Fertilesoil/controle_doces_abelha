@@ -1,21 +1,27 @@
 ﻿import { Router } from "express";
-import { ProdutoVendaController } from "../Controllers/ProdutoVendaController.mjs";
+import ProdutoVendaController from "../Controllers/ProdutoVendaController.mjs";
 import { checkSchema } from "express-validator";
 import { validacaoProdutoVendaSchema } from "../Middlewares/Validacoes/ValidationSchemas.mjs";
+import { authMiddleware } from "../Middlewares/Auth/AuthMiddleware.mjs";
 
 const router = new Router();
-const produtoVendaController = new ProdutoVendaController();
 
-router.get("/api/listarProdutosVenda", produtoVendaController.listarProdutosVenda);
+router.get("/api/listarProdutosVenda", ProdutoVendaController.listarProdutosVenda);
 
-// router.get("/api/listarProdutosVenda/:id", produtoVendaController.buscarPreçoProdutoPorId);
+
 
 router.post("/api/cadastrarProdutosVenda",
+ authMiddleware,
  checkSchema(validacaoProdutoVendaSchema),
- produtoVendaController.cadastrarProdutoVenda);
+ ProdutoVendaController.cadastrarProdutoVenda);
+
 router.put("/api/atualizarProdutoVenda/:id",
+ authMiddleware,
  checkSchema(validacaoProdutoVendaSchema),
- produtoVendaController.atualizarProdutoVenda);
-router.delete("/api/deletarProdutoVenda/:id", produtoVendaController.deletarProdutoVenda);
+ ProdutoVendaController.atualizarProdutoVenda);
+
+router.delete("/api/deletarProdutoVenda/:id",
+ authMiddleware,
+ ProdutoVendaController.deletarProdutoVenda);
 
 export default router;

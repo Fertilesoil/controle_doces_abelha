@@ -1,6 +1,6 @@
 ﻿import VendaRepository from "../Repositories/VendaRepository.mjs";
 
-export class VendaController {
+class VendaController {
 
   async listarVendas(req, res) {
     try {
