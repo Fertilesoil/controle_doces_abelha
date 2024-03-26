@@ -4,20 +4,20 @@ import { authMiddleware } from "../Middlewares/Auth/AuthMiddleware.mjs";
 
 const router = new Router();
 
-router.get("/api/listarVendas",
- authMiddleware,
- VendaController.listarVendas);
+router.get("/api/vendas",
+  authMiddleware,
+  VendaController.listarVendas);
 
-router.get("/api/listarPorData",
- authMiddleware,
- VendaController.vendaPorData);
+router.get("/api/vendas",
+  authMiddleware,
+  VendaController.vendaPorData);
 
-router.post("/api/cadastrarVenda",
- authMiddleware,
- VendaController.cadastrarVenda);
+router.post("/api/vendas",
+  authMiddleware,
+  VendaController.cadastrarVenda);
 
-router.delete("/api/deletarVenda/:id",
- authMiddleware,
- VendaController.deletarVenda);
+router.delete("/api/vendas/:id",
+  authMiddleware,
+  VendaController.deletarVenda);
 
 export default router;

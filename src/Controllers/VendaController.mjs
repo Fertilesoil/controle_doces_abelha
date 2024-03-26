@@ -8,7 +8,7 @@ class VendaController {
       if (lista)
         return res.status(200).json(lista);
     } catch (error) {
-      res.status(500).json({ error: "Erro ao buscar as vendas", error });
+      res.status(500).json({ erro: "Erro ao buscar as vendas", error });
     };
   };
 
@@ -20,7 +20,7 @@ class VendaController {
       if (data)
         return res.status(200).json(data);
     } catch (error) {
-      res.status(500).json({ error: "Erro ao buscar as vendas", error });
+      res.status(500).json({ erro: "Erro ao buscar as vendas", error });
     };
   };
 
@@ -44,7 +44,7 @@ class VendaController {
         return;
     } catch (error) {
       console.table(error);
-      return res.status(500).json({ error: "Erro ao registrar a venda. Você deve registrar um valor numérico válido", error });
+      return res.status(500).json({ erro: "Erro ao registrar a venda. Você deve registrar um valor numérico válido", error });
     };
   };
 }

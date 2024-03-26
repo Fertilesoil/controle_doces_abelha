@@ -5,6 +5,6 @@ import { authMiddleware } from "../Middlewares/Auth/AuthMiddleware.mjs";
 const router = new Router();
 
 router.post("/api/login", LoginController.login);
-router.get("/api/getoso", authMiddleware, LoginController.checarToken);
+router.get("/api/autenticacao", authMiddleware, LoginController.checarToken);
 
 export default router;

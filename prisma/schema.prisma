@@ -41,7 +41,7 @@ model ProdutoVenda {
   peso       Int
   preco      Float
   recheio    Recheio?    @relation(fields: [recheio_id], references: [id])
-  recheio_id String?     
+  recheio_id String?    
   ItemVenda  ItemVenda[]
 
   @@map("produto_venda")
@@ -49,7 +49,7 @@ model ProdutoVenda {
 
 model Recheio {
   id           String         @id @default(uuid())
-  nome         String
+  nome         String @unique
   ProdutoVenda ProdutoVenda[]
 
   @@map("recheio")

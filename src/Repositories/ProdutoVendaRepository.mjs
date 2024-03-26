@@ -2,25 +2,25 @@
 
 
 class ProdutoVendaRepository {
- async listar() {
-  const listaProdutos = await prisma.produtoVenda.findMany();
-  return listaProdutos;
- }
+  async listar() {
+    const listaProdutos = await prisma.produtoVenda.findMany({ include: { recheio: true } });
+    return listaProdutos;
+  }
 
- async cadastrar(body) {
-  const novoProduto = await prisma.produtoVenda.create({ data: body });
-  return novoProduto;
- }
+  async cadastrar(body) {
+    const novoProduto = await prisma.produtoVenda.create({ data: body });
+    return novoProduto;
+  }
 
- async atualizar(id, body) {
-  const produtoAtualizado = await prisma.produtoVenda.update({ where: { id: id }, data: body });
-  return produtoAtualizado;
- }
+  async atualizar(id, body) {
+    const produtoAtualizado = await prisma.produtoVenda.update({ where: { id: id }, data: body });
+    return produtoAtualizado;
+  }
 
- async deletar(id) {
-  const produtoDeletado = await prisma.produtoVenda.delete({ where: { id: id } });
-  return produtoDeletado;
- }
+  async deletar(id) {
+    const produtoDeletado = await prisma.produtoVenda.delete({ where: { id: id } });
+    return produtoDeletado;
+  }
 }
 
 export default new ProdutoVendaRepository();

@@ -11,17 +11,17 @@ router.get("/api/listarProdutosVenda", ProdutoVendaController.listarProdutosVend
 
 
 router.post("/api/cadastrarProdutosVenda",
- authMiddleware,
- checkSchema(validacaoProdutoVendaSchema),
- ProdutoVendaController.cadastrarProdutoVenda);
+  authMiddleware,
+  checkSchema(validacaoProdutoVendaSchema),
+  ProdutoVendaController.cadastrarProdutoVenda);
 
 router.put("/api/atualizarProdutoVenda/:id",
- authMiddleware,
- checkSchema(validacaoProdutoVendaSchema),
- ProdutoVendaController.atualizarProdutoVenda);
+  authMiddleware,
+  checkSchema(validacaoProdutoVendaSchema),
+  ProdutoVendaController.atualizarProdutoVenda);
 
 router.delete("/api/deletarProdutoVenda/:id",
- authMiddleware,
- ProdutoVendaController.deletarProdutoVenda);
+  authMiddleware,
+  ProdutoVendaController.deletarProdutoVenda);
 
 export default router;

@@ -1,0 +1,163 @@
+﻿{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "controle-doces-abelha",
+    "version": "1.0.0",
+    "description": "Api controladora de fluxo de caixa e estoque",
+    "contact": {
+      "name": "Suporte",
+      "email": "fdias132@gmail.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "Usuarios",
+      "description": "Rotas para autenticação e manipulação dos dados de usuários"
+    },
+    {
+      "name": "Vendas",
+      "description": "Rotas para cadastro e vizualização de vendas"
+    }
+  ],
+  "paths": {
+    "/api/login": {
+      "post": {
+        "tags": [
+          "Usuarios"
+        ],
+        "description": "Login da aplicação",
+        "requestBody": {
+          "description": "Dados necessários para logar na aplicação",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Usuario"
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Dados do usuario inconsistentes"
+          },
+          "200": {
+            "description": "Login realizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RespostaUsuario"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/vendas": {
+      "get": {
+        "tags": [
+          "Vendas"
+        ],
+        "security": [
+          {"bearerAuth": []}
+        ],
+        "description": "Listar todas as vendas",
+        "responses": {
+          "200": {
+            "description": "Login realizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RespostaVenda"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno no servidor"
+          },
+          "401": {
+            "description": "Não autorizado"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Usuario": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "janedoe@gmail.com"
+          },
+          "senha": {
+            "type": "string",
+            "example": "senhaforte123!.."
+          }
+        }
+      },
+      "RespostaUsuario": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "primeiro_nome": {
+            "type": "string",
+            "example": "Jane"
+          },
+          "sobrenome": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "example": "janedoe@gmail.com"
+          },
+          "token": {
+            "type": "string",
+            "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiw"
+          }
+        }
+      },
+      "Venda": {
+        "type": "object",
+        "properties": {
+          "total_venda": {
+
+          }
+        }
+      },
+      "RespostaVenda": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "total_venda": {
+            "type": "float",
+            "example": 229.40
+          },
+          "created_at": {
+            "type": "data",
+            "example": "2024-03-24T15:34:41.931Z"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
