@@ -8,10 +8,9 @@ class VendaController {
       if (lista)
         return res.status(200).json(lista);
     } catch (error) {
-      res.status(500).json({ erro: "Erro ao buscar as vendas", error });
+      return res.status(500).json({ erro: "Erro ao buscar as vendas", error });
     };
   };
-
   async vendaPorData(req, res) {
     try {
       const { maior, menor } = req.body;
@@ -20,7 +19,7 @@ class VendaController {
       if (data)
         return res.status(200).json(data);
     } catch (error) {
-      res.status(500).json({ erro: "Erro ao buscar as vendas", error });
+      return res.status(500).json({ erro: "Erro ao buscar as vendas", error });
     };
   };
 
@@ -32,18 +31,20 @@ class VendaController {
         return res.status(200).send({ msg: "Deu bom, tudo apagado", deletado });
     } catch (error) {
       console.log(error);
-      res.status(500).json({ erro: "Erro ao deletar a venda", error });
+      return res.status(500).json({ erro: "Erro ao deletar a venda", error });
     }
   }
 
   async cadastrarVenda(req, res) {
     try {
       const { total_venda, itens } = req.body;
+
       const cadastroVenda = await VendaRepository.cadastrar(total_venda, itens, res);
-      if (cadastroVenda)
+      if (cadastroVenda) {
         return;
+      }
     } catch (error) {
-      console.table(error);
+      console.log(error);
       return res.status(500).json({ erro: "Erro ao registrar a venda. Você deve registrar um valor numérico válido", error });
     };
   };

@@ -8,7 +8,7 @@ router.get("/api/vendas",
   authMiddleware,
   VendaController.listarVendas);
 
-router.get("/api/vendas",
+router.get("/api/vendas/data",
   authMiddleware,
   VendaController.vendaPorData);
 

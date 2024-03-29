@@ -41,7 +41,8 @@ model ProdutoVenda {
   peso       Int
   preco      Float
   recheio    Recheio?    @relation(fields: [recheio_id], references: [id])
-  recheio_id String?    
+  recheio_id String?
+  quantidade Int 
   ItemVenda  ItemVenda[]
 
   @@map("produto_venda")
@@ -49,14 +50,14 @@ model ProdutoVenda {
 
 model Recheio {
   id           String         @id @default(uuid())
-  nome         String @unique
+  nome         String         @unique
   ProdutoVenda ProdutoVenda[]
 
   @@map("recheio")
 }
 
 model Venda {
-  id          String      @id @default(uuid()) @unique
+  id          String      @id @unique @default(uuid())
   total_venda Float
   createdAt   DateTime    @default(dbgenerated("NOW()"))
   ItemVenda   ItemVenda[]
@@ -74,4 +75,12 @@ model ItemVenda {
   total_item       Float
 
   @@map("item_venda")
+}
+
+model TotalVendaDiaria {
+  id        String   @id @default(uuid())
+  total_dia Float 
+  createdAt DateTime @default(dbgenerated("NOW()")) @unique
+
+  @@map("total_venda_diaria")
 }
