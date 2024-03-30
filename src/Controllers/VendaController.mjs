@@ -30,7 +30,6 @@ class VendaController {
       if (deletado)
         return res.status(200).send({ msg: "Deu bom, tudo apagado", deletado });
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ erro: "Erro ao deletar a venda", error });
     }
   }
@@ -44,7 +43,6 @@ class VendaController {
         return;
       }
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ erro: "Erro ao registrar a venda. Você deve registrar um valor numérico válido", error });
     };
   };

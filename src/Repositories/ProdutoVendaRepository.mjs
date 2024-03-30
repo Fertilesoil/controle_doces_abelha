@@ -17,11 +17,18 @@ class ProdutoVendaRepository {
     return produtoAtualizado;
   }
 
-  // async atualizarEstoque(produto) {
-  //   const itensAtualizados = await prisma.produtoVenda.updateMany({
-  //     where: { data: produto }
-  //   });
-  // }
+  async atualizarEstoque(produto) {
+    for (const item of produto) {
+      await prisma.produtoVenda.update({
+        where: { id: item.produto_venda_id },
+        data: {
+          quantidade: {
+            decrement: item.quantidade
+          }
+        }
+      });
+    }
+  }
 
   async deletar(id) {
     const produtoDeletado = await prisma.produtoVenda.delete({ where: { id: id } });

@@ -1,6 +1,7 @@
 ﻿
 import { prisma } from "../Middlewares/InstanciaCliente.mjs";
 import { v4 as uuidv4 } from 'uuid';
+import ProdutoVendaRepository from "./ProdutoVendaRepository.mjs";
 class VendaRepository {
   async cadastrar(total_venda, itens, res) {
     await prisma.$transaction(async (prisma) => {
@@ -22,16 +23,13 @@ class VendaRepository {
       });
 
       if (novaVenda) {
-        for (let item of novaVenda.ItemVenda) {
-          item.quantidade = -item.quantidade;
-          
-        }
+        const { ItemVenda } = novaVenda;
+        await ProdutoVendaRepository.atualizarEstoque(ItemVenda);
       }
 
       if (novaVenda) {
         const { total_venda } = novaVenda;
         let total_dia = await this.executarAcao(total_venda);
-        console.log(total_dia.total_dia + total_venda);
         let total = total_dia.total_dia + total_venda;
         return res.status(201).json({ novaVenda, total });
       }
@@ -81,18 +79,6 @@ class VendaRepository {
     return deletados;
   }
 
-  //   async obterEstatisticasVendas() {
-  //     const estatisticas = await prisma.venda.aggregate({
-  //       _count: { id: true }, // Contagem total de vendas
-  //       _sum: { total_venda: true }, // Soma total das vendas
-  //       _avg: { total_venda: true }, // Média das vendas
-  //       _max: { total_venda: true }, // Valor máximo de uma venda
-  //       _min: { total_venda: true }, // Valor mínimo de uma venda
-  //     });
-
-  //     return estatisticas;
-  // }
-
   async buscarTotalDiario(hoje) {
     const total = await prisma.totalVendaDiaria.findFirst({
       where:
@@ -119,23 +105,16 @@ class VendaRepository {
     const hoje = new Date();
     hoje.setHours(0, 0, 0, 0);
     const totalDia = await this.buscarTotalDiario(hoje);
-    console.log(totalDia);
 
     if (totalDia) {
       let { total_dia, id } = totalDia;
       total_dia += total_venda;
       const total = await this.atualizarTotalDiario(id, total_dia);
-      if (total)
-        console.log(total);
     } else if (!totalDia) {
       const id = uuidv4();
-      console.log(id);
       const total = await this.atualizarTotalDiario(id, total_venda);
-      console.log(total);
       return total;
-    } else {
-      console.log(`Deu ruim`);
-    }
+    } 
     return totalDia;
   }
 }
