@@ -17,7 +17,7 @@ class UsuariosController {
       const usuario = await UsuarioRepository.cadastrar(primeiro_nome, sobrenome, email, senhaHash);
       if (usuario) {
         const { senha: _, ...usuarioCriado } = usuario;
-        return res.status(201).json(usuarioCriado);
+        return res.status(200).json({ msg: "Usuário criado com sucesso", usuarioCriado });
       }
     } catch (error) {
       return res.status(500).json({ msg: "Erro Interno no Servidor", erro: error });

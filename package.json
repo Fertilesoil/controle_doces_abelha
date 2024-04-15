@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon --verbose src/server.mjs",
     "debug": "nodemon -w lib -w src/server.mjs --inspect=0.0.0.0 src/server.mjs",
-    "test": "vitest"
+    "test": "vitest",
+    "start": "node src/server.mjs"
   },
   "license": "MIT",
   "devDependencies": {
