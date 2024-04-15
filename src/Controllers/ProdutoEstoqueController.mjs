@@ -6,9 +6,8 @@ class ProdutoEstoqueController {
   async listarProdutos(req, res) {
     try {
       const lista = await ProdutoEstoqueRepository.listar();
-      const { usuario } = req;
       if (lista)
-        return res.status(200).json({ lista, usuario });
+        return res.status(200).json(lista);
     } catch (error) {
       const { data } = error;
       if (data === undefined)

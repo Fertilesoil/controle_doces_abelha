@@ -1,6 +1,7 @@
 ﻿
 
 class MetricasController {
+  
   async metricasDoMes() {
     const estatisticas = await prisma.venda.aggregate({
       _count: { id: true }, // Contagem total de vendas
@@ -13,9 +14,9 @@ class MetricasController {
     return estatisticas;
   }
 
-  async totalDaSemana() {
+  // async totalDaSemana() {
     
-  }
+  // }
 }
 
 export default new MetricasController();

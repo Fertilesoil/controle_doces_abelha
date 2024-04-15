@@ -11,6 +11,7 @@ class VendaController {
       return res.status(500).json({ erro: "Erro ao buscar as vendas", error });
     };
   };
+  
   async vendaPorData(req, res) {
     try {
       const { maior, menor } = req.body;

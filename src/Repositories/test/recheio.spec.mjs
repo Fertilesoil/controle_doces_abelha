@@ -8,7 +8,7 @@ describe("Recheio Repository", () => {
   //   const resultado = await RecheioRepository.cadastrar({
   //     nome: "Beard"
   //   })
-    // .then(resultado => expect(resultado).toHaveProperty('id'));
+  // .then(resultado => expect(resultado).toHaveProperty('id'));
 
   //   expect(resultado).toHaveProperty('id')
   //   expect(resultado.nome).toBe("Beard")
@@ -33,4 +33,24 @@ describe("Recheio Repository", () => {
 
   //   expect(recheios).toHaveLength(7);
   // });
+
+  // test('Deve retornar um recheio dado um id', async () => {
+
+  //   const recheioPorID = await RecheioRepository.listarPorId('abbef1ad-bbc7-402e-92ff-b81e7e6a7497');
+
+  //   const produtoBuscado = {
+  //     id: "abbef1ad-bbc7-402e-92ff-b81e7e6a7497",
+  //     nome: "Clarice Falcon"
+  //   }
+  //   expect(recheioPorID).toEqual(produtoBuscado);
+
+  // })
+
+  test('Não deve retornar um recheio dado um id inexistente', async () => {
+
+    const recheioPorID = await RecheioRepository.listarPorId('abbef1ad-bb57-402e-92ff-b81e7e6a7497');
+
+    expect(recheioPorID).toBeNull();
+  })
 });
+

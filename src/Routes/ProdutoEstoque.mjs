@@ -7,21 +7,21 @@ import { authMiddleware } from "../Middlewares/Auth/AuthMiddleware.mjs";
 const router = Router();
 
 router.get("/api/listarProdutos",
- authMiddleware,
- ProdutoEstoqueController.listarProdutos);
+  authMiddleware,
+  ProdutoEstoqueController.listarProdutos);
 
 router.post("/api/criarProduto",
- checkSchema(validacaoProdutoEstoqueSchema),
- authMiddleware,
- ProdutoEstoqueController.cadastrarProduto);
+  checkSchema(validacaoProdutoEstoqueSchema),
+  authMiddleware,
+  ProdutoEstoqueController.cadastrarProduto);
 
 router.put("/api/atualizarProduto/:id",
- authMiddleware,
- checkSchema(validacaoProdutoEstoqueSchema),
- ProdutoEstoqueController.atualizarProduto);
+  authMiddleware,
+  checkSchema(validacaoProdutoEstoqueSchema),
+  ProdutoEstoqueController.atualizarProduto);
 
 router.delete("/api/deletarProduto/:id",
- authMiddleware,
- ProdutoEstoqueController.deletarProduto);
+  authMiddleware,
+  ProdutoEstoqueController.deletarProduto);
 
 export default router;

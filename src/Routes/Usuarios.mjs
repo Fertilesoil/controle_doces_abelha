@@ -7,20 +7,20 @@ import { authMiddleware } from "../Middlewares/Auth/AuthMiddleware.mjs";
 const routerUsuarios = Router();
 
 routerUsuarios.get("/api/listarUsuarios",
- authMiddleware,
- UsuariosController.listarUsuarios);
+  authMiddleware,
+  UsuariosController.listarUsuarios);
 
 routerUsuarios.post("/api/criarUsuario",
- checkSchema(validacaoUsuarioSchema),
- UsuariosController.cadastrarUsuario);
+  checkSchema(validacaoUsuarioSchema),
+  UsuariosController.cadastrarUsuario);
 
 routerUsuarios.delete("/api/deletarUsuario/:id",
- authMiddleware,
- UsuariosController.deletarUsuario);
+  authMiddleware,
+  UsuariosController.deletarUsuario);
 
 routerUsuarios.put("/api/atualizarUsuario/:id",
- authMiddleware,
- checkSchema(validacaoUsuarioSchema),
- UsuariosController.atualizarUsuario);
+  authMiddleware,
+  checkSchema(validacaoUsuarioSchema),
+  UsuariosController.atualizarUsuario);
 
 export default routerUsuarios;

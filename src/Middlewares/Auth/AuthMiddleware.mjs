@@ -1,27 +1,30 @@
-﻿import UsuarioRepository from "../../Repositories/UsuarioRepository.mjs";
-import jwt from "jsonwebtoken";
+﻿import jwt from "jsonwebtoken";
 
 export const authMiddleware = async (req, res, next) => {
-  try {
-    const { authorization } = req.headers;
 
-    if (!authorization)
-      throw new Error("Não autorizado");
+  const authHeader = req.headers.authorization || req.headers.Authorization;
 
-    const token = authorization.split(' ')[1];
-    const { id } = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  if (!authHeader?.startsWith('Bearer ')) {
+    return res.json({ msg: "Não autorizado" });
+  }
 
-    const usuario = await UsuarioRepository.acharUsuarioPorId(id);
+  if (authHeader) {
+    const token = authHeader.split(' ')[1];
 
-    if (!usuario)
-      throw new Error("Não autorizado");
+    try {
+      jwt.verify(
+        token,
+        process.env.ACCESS_TOKEN_SECRET,
+        async (err, result) => {
+          if (err)
+            return res.status(401).json({ msg: "Não autorizado" });
 
-    const { senha: _, createdAt, ...usuarioLogado } = usuario;
-
-    req.usuario = usuarioLogado;
-
-    next();
-  } catch (error) {
-    return res.status(401).json(error.message);
-  };
+          req.usuario = result;
+          next();
+        }
+      );
+    } catch (error) {
+      return res.status(401).json(error.message);
+    }
+  }
 };

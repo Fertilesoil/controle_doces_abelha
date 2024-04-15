@@ -51,7 +51,6 @@ class UsuariosController {
     };
   };
 
-
   async atualizarUsuario(req, res) {
     const validacao = criarValidacao(req, res);
     if (validacao) {

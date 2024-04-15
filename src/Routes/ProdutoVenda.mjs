@@ -8,8 +8,6 @@ const router = new Router();
 
 router.get("/api/listarProdutosVenda", ProdutoVendaController.listarProdutosVenda);
 
-
-
 router.post("/api/cadastrarProdutosVenda",
   authMiddleware,
   checkSchema(validacaoProdutoVendaSchema),

@@ -2,6 +2,7 @@
 import ProdutoVendaRepository from "../Repositories/ProdutoVendaRepository.mjs";
 
 class ProdutoVendaController {
+  
   async listarProdutosVenda(req, res) {
     try {
       const lista = await ProdutoVendaRepository.listar();
