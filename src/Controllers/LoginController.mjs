@@ -84,7 +84,7 @@ class LoginController {
 
           res.cookie("access_token", tokenAcesso, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             sameSite: 'strict',
             maxAge: 2000
           });
@@ -109,6 +109,7 @@ class LoginController {
 
       res.clearCookie('refresh_token', {
         httpOnly: true,
+        secure: true,
         sameSite: 'strict',
         secure: false
       });
