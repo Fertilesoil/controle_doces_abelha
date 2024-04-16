@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import UsuarioRepository from "../Repositories/UsuarioRepository.mjs";
 
 class LoginController {
-  
+
   async login(req, res) {
     try {
       const { email, senha } = req.body;
@@ -28,6 +28,7 @@ class LoginController {
       );
 
       res.cookie('access_token', tokenAcesso, {
+        path: "/",
         httpOnly: true,
         secure: true,
         sameSite: 'Strict',
@@ -35,6 +36,7 @@ class LoginController {
       });
 
       res.cookie('refresh_token', tokenRefresh, {
+        path: "/",
         httpOnly: true,
         secure: true,
         sameSite: 'Strict',
@@ -83,6 +85,7 @@ class LoginController {
           );
 
           res.cookie("access_token", tokenAcesso, {
+            path: "/",
             httpOnly: true,
             secure: true,
             sameSite: 'Strict',
@@ -108,6 +111,7 @@ class LoginController {
         return res.status(204);
 
       res.clearCookie('refresh_token', {
+        path: "/",
         httpOnly: true,
         secure: true,
         sameSite: 'Strict'
