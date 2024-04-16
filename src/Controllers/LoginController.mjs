@@ -28,18 +28,16 @@ class LoginController {
       );
 
       res.cookie('access_token', tokenAcesso, {
-        path: "/",
         httpOnly: true,
         secure: true,
-        sameSite: 'Strict',
+        sameSite: 'None',
         maxAge: 2 * 60 * 1000
       });
 
       res.cookie('refresh_token', tokenRefresh, {
-        path: "/",
         httpOnly: true,
         secure: true,
-        sameSite: 'Strict',
+        sameSite: 'None',
         maxAge: 7 * 24 * 60 * 60 * 1000
       });
 
@@ -85,10 +83,9 @@ class LoginController {
           );
 
           res.cookie("access_token", tokenAcesso, {
-            path: "/",
             httpOnly: true,
             secure: true,
-            sameSite: 'Strict',
+            sameSite: 'None',
             maxAge: 2000
           });
 
@@ -111,10 +108,9 @@ class LoginController {
         return res.status(204);
 
       res.clearCookie('refresh_token', {
-        path: "/",
         httpOnly: true,
         secure: true,
-        sameSite: 'Strict'
+        sameSite: 'None'
       });
 
       return res.json({ msg: "Deslogado com sucesso" });
