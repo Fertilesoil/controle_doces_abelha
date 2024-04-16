@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(cors({
   credentials: true,
-  origin: process.env.PERMITED_PORT
+  origin: process.env.PERMITED_PORT_PROD && process.env.PERMITED_PORT_DEV
 }));
 
 app.use(express.json());
