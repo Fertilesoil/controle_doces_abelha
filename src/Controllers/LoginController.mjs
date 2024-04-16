@@ -29,14 +29,14 @@ class LoginController {
 
       res.cookie('access_token', tokenAcesso, {
         httpOnly: true,
-        secure: false,
+        secure: true,
         sameSite: 'strict',
         maxAge: 2 * 60 * 1000
       });
 
       res.cookie('refresh_token', tokenRefresh, {
         httpOnly: true,
-        secure: false,
+        secure: true,
         sameSite: 'strict',
         maxAge: 7 * 24 * 60 * 60 * 1000
       });
