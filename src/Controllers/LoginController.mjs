@@ -110,8 +110,7 @@ class LoginController {
       res.clearCookie('refresh_token', {
         httpOnly: true,
         secure: true,
-        sameSite: 'strict',
-        secure: false
+        sameSite: 'strict'
       });
 
       return res.json({ msg: "Deslogado com sucesso" });
