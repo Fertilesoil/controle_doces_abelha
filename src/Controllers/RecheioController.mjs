@@ -32,8 +32,8 @@ class RecheioController {
     }
 
     try {
-      const { body } = req;
-      const recheioCadastrado = await RecheioRepository.cadastrar(body);
+      const { nome } = req.body;
+      const recheioCadastrado = await RecheioRepository.cadastrar(nome);
       if (recheioCadastrado)
         return res.status(201).send(recheioCadastrado);
     } catch (error) {
