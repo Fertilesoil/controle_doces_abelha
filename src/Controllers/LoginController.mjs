@@ -24,7 +24,7 @@ class LoginController {
       const tokenRefresh = jwt.sign(
         { nome_usuario: usuarioLogin.primeiro_nome, email: usuarioLogin.email },
         process.env.REFRESH_TOKEN_SECRET,
-        { expiresIn: '1d' }
+        { expiresIn: '3d' }
       );
 
       res.cookie('access_token', tokenAcesso, {
@@ -37,8 +37,8 @@ class LoginController {
       res.cookie('refresh_token', tokenRefresh, {
         httpOnly: true,
         secure: true,
-        sameSite: 'Lax',
-        maxAge: 7 * 24 * 60 * 60 * 1000
+        sameSite: 'None',
+        maxAge: 3 * 24 * 60 * 60 * 1000
       });
 
       return res.json({ tokenAcesso });
@@ -110,7 +110,7 @@ class LoginController {
       res.clearCookie('refresh_token', {
         httpOnly: true,
         secure: true,
-        sameSite: 'Lax'
+        sameSite: 'None'
       });
 
       return res.json({ msg: "Deslogado com sucesso" });
