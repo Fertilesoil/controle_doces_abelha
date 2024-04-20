@@ -13,7 +13,7 @@ class ProdutoVendaRepository {
   }
 
   async buscarPorId(id) {
-    const produto = await prisma.produtoVenda.findUnique({ where: { id: id } });
+    const produto = await prisma.produtoVenda.findUnique({ where: { id: id, include: { recheio: true } } });
     return produto;
   }
 
