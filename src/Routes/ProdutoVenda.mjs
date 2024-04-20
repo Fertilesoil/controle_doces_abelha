@@ -9,9 +9,13 @@ const router = new Router();
 router.get("/api/listarProdutosVenda", ProdutoVendaController.listarProdutosVenda);
 
 router.post("/api/cadastrarProdutosVenda",
-  authMiddleware,
-  checkSchema(validacaoProdutoVendaSchema),
+authMiddleware,
+checkSchema(validacaoProdutoVendaSchema),
   ProdutoVendaController.cadastrarProdutoVenda);
+
+router.get("/api/listarProdutosVenda/:id",
+  authMiddleware,
+  ProdutoVendaController.buscarProdutoPorId)
 
 router.put("/api/atualizarProdutoVenda/:id",
   authMiddleware,

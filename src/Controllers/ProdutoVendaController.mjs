@@ -13,6 +13,19 @@ class ProdutoVendaController {
     }
   }
 
+  async buscarProdutoPorId(req, res) {
+    try {
+      const { id } = req.params;
+      const produto = await ProdutoVendaRepository.buscarPorId(id);
+
+      if (produto) {
+        return res.status(200).json(produto);
+      }
+    } catch (error) {
+      return res.status(500).send({ msg: "Erro", error: error });
+    }
+  }
+
   async cadastrarProdutoVenda(req, res) {
     const validacao = criarValidacao(req);
     if (validacao) {
@@ -26,7 +39,7 @@ class ProdutoVendaController {
       if (novoProduto)
         return res.status(201).json(novoProduto);
     } catch (error) {
-      return res.status(500).json({ msg: "Erro Interno no Servidor", error: error });
+      return res.status(500).json({ msg: "Erro Interno no Servidor", error: error.message });
     };
   };
 

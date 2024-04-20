@@ -12,6 +12,11 @@ class ProdutoVendaRepository {
     return novoProduto;
   }
 
+  async buscarPorId(id) {
+    const produto = await prisma.produtoVenda.findOne({ id: id });
+    return produto;
+  }
+
   async atualizar(id, body) {
     const produtoAtualizado = await prisma.produtoVenda.update({ where: { id: id }, data: body });
     return produtoAtualizado;
