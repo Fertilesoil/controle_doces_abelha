@@ -17,6 +17,18 @@ class ProdutoEstoqueController {
     };
   };
 
+  async buscarProdutoPorId(req, res) {
+    try {
+      const { id } = req.params;
+      const produto = await ProdutoEstoqueRepository.buscarPorId(id);
+      if (produto) {
+        return res.status(201).json(novoProduto);
+      }
+    } catch (error) {
+      return res.status(500).json({ msg: "Erro Interno no Servidor", error: error });
+    }
+  };
+
   async cadastrarProduto(req, res) {
     const validacao = criarValidacao(req);
     if (validacao) {

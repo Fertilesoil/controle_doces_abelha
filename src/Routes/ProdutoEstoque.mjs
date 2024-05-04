@@ -10,6 +10,10 @@ router.get("/api/listarProdutos",
   authMiddleware,
   ProdutoEstoqueController.listarProdutos);
 
+router.get("/api/listarProdutos/:id",
+  authMiddleware,
+  ProdutoEstoqueController.buscarProdutoPorId)
+
 router.post("/api/criarProduto",
   checkSchema(validacaoProdutoEstoqueSchema),
   authMiddleware,
