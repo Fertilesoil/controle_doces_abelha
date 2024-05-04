@@ -22,7 +22,7 @@ class ProdutoEstoqueController {
       const { id } = req.params;
       const produto = await ProdutoEstoqueRepository.buscarPorId(id);
       if (produto) {
-        return res.status(201).json(novoProduto);
+        return res.status(200).json(produto);
       }
     } catch (error) {
       return res.status(500).json({ msg: "Erro Interno no Servidor", error: error });
