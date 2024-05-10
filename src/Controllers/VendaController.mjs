@@ -50,7 +50,7 @@ class VendaController {
 
   async buscarTotalDiario(req, res) {
     try {
-      const { dia } = req.body;
+      const dia = new Date();
       const total = await VendaRepository.buscarTotalDiario(dia);
       if (total) {
         return res.status(200).json(total);
