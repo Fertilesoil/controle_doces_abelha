@@ -11,7 +11,7 @@ class VendaController {
       return res.status(500).json({ erro: "Erro ao buscar as vendas", error });
     };
   };
-  
+
   async vendaPorData(req, res) {
     try {
       const { maior, menor } = req.body;
@@ -47,6 +47,18 @@ class VendaController {
       return res.status(500).json({ erro: "Erro ao registrar a venda. Você deve registrar um valor numérico válido", error });
     };
   };
+
+  async buscarTotalDiario(req, res) {
+    try {
+      const { dia } = req.body;
+      const total = await VendaRepository.buscarTotalDiario(dia);
+      if (total) {
+        return res.status(200).json(total);
+      }
+    } catch (error) {
+      return res.status(500).json({ erro: "Erro ao buscar total diário", error });
+    }
+  }
 }
 
 export default new VendaController();

@@ -12,6 +12,11 @@ router.get("/api/vendas/data",
   authMiddleware,
   VendaController.vendaPorData);
 
+router.get("/api/vendas/diario",
+  authMiddleware,
+  VendaController.buscarTotalDiario);
+
+
 router.post("/api/vendas",
   authMiddleware,
   VendaController.cadastrarVenda);

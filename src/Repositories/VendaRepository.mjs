@@ -1,5 +1,4 @@
-﻿
-import { prisma } from "../Middlewares/InstanciaCliente.mjs";
+﻿import { prisma } from "../Middlewares/InstanciaCliente.mjs";
 import { v4 as uuidv4 } from 'uuid';
 import ProdutoVendaRepository from "./ProdutoVendaRepository.mjs";
 class VendaRepository {
