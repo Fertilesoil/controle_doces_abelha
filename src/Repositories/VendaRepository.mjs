@@ -79,12 +79,18 @@ class VendaRepository {
   }
 
   async buscarTotalDiario(hoje) {
+    const inicioDoDia = new Date(hoje);
+    inicioDoDia.setHours(0, 0, 0, 0);
+
+    const fimDoDia = new Date(hoje);
+    fimDoDia.setHours(23, 59, 59, 999);
+
     const total = await prisma.totalVendaDiaria.findFirst({
       where:
       {
         createdAt: {
-          gte: new Date(hoje).toISOString()
-          // lt: new Date(amanha).toISOString()
+          gte: inicioDoDia,
+          lt: fimDoDia,
         }
       }
     });
@@ -113,7 +119,7 @@ class VendaRepository {
       const id = uuidv4();
       const total = await this.atualizarTotalDiario(id, total_venda);
       return total;
-    } 
+    }
     return totalDia;
   }
 }
